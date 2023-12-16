@@ -1,5 +1,4 @@
 import streamlit as st
-import poetry as pt
 
 def main():
     bg_color = "#000000"  # Change this to your desired color code
