@@ -10,7 +10,7 @@ centered_title_html = """
 
 centered_subtitle_html = """
     <div style="display: flex; justify-content: center; align-items: center;">
-        <h1 style="text-align: center;">Donate to transform lives in rural villages!</h1>
+        <h1 style="text-align: center; font-size: 20px;">Donate to transform lives in rural villages!</h1>
     </div>
 """
 
@@ -35,6 +35,7 @@ contribute to a brighter future."
 images = ["vil1.jpg", "vil2.jpg", "vil3.jpg"]
 descriptions = [descr1, descr2, descr3]
 width_const = 800
+
 
 def poor_village_image():
     # List of image paths or URLs
@@ -61,8 +62,8 @@ def poor_village_image():
     st.image(images[current_index], use_column_width=True)
     st.text(descriptions[current_index])
 
+
 st.markdown(centered_title_html, unsafe_allow_html=True)
 st.markdown(centered_subtitle_html, unsafe_allow_html=True)
 
 poor_village_image()
-
