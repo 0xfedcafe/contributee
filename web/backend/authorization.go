@@ -9,7 +9,7 @@ import (
 )
 
 func authorizeHandler(c *gin.Context) {
-	cardNumber := c.Query("card_number")
+	cardNumber := c.PostForm("card_number")
 	fmt.Println(cardNumber)
 
 	url := "https://api.ammer.io/wallet-proxy/api/cardUuidByNumber/"
@@ -28,12 +28,12 @@ func authorizeHandler(c *gin.Context) {
 
 	fmt.Println(p.UUID)
 
-	metadata, err := getPublicKey(p.UUID)
+	_, err = getPublicKey(p.UUID)
 	if err != nil {
 		c.Status(500)
 	}
 
-	fmt.Println(metadata)
+	//fmt.Println(metadata)
 }
 
 func getPublicKey(UUID string) (*Metadata, error) {
@@ -45,10 +45,12 @@ func getPublicKey(UUID string) (*Metadata, error) {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	var m *Metadata
+	var m *Metadata //&Metadata{}
 
-	err := json.Unmarshal(body, m)
-	fmt.Println(string(body))
+	err := json.Unmarshal(body, &m)
+
+	fmt.Println(m)
+
 	if err != nil {
 		return nil, err
 	}
