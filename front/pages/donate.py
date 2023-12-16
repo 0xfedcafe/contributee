@@ -3,14 +3,14 @@ import pandas as pd
 
 # Dummy data representing poor villages
 centered_title_html = """
-    <div style="display: flex; justify-content: center; align-items: center; height: 200px;">
+    <div style="display: flex; justify-content: center; align-items: center;">
         <h1 style="text-align: center;">Make a donation!</h1>
     </div>
 """
 
 centered_subtitle_html = """
-    <div style="display: flex; justify-content: center; align-items: center; height: 200px;">
-        <h1 style="text-align: center;">Donate to trasform lives in rural villages!</h1>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <h1 style="text-align: center;">Donate to transform lives in rural villages!</h1>
     </div>
 """
 
@@ -32,45 +32,37 @@ economic hardships and inadequate infrastructure. Your support can empower the r
 contribute to a brighter future."
 """
 
-def donate_to_village():
-    st.markdown(centered_title_html, unsafe_allow_html=True)
-
-    st.markdown(centered_subtitle_html, unsafe_allow_html=True)
+images = ["vil1.jpg", "vil2.jpg", "vil3.jpg"]
+descriptions = [descr1, descr2, descr3]
+width_const = 800
 
 def poor_village_image():
     # List of image paths or URLs
-    images = ["vil1.jpg", "vil2.jpg", "vil3.jpg"]
-    descriptions = [descr1, descr2, descr3]
-    # current_index = st.slider("Select Image", 0, len(images) - 1, 0)
 
-    # Display arrows for navigation
     col1, col2, col3 = st.columns(3)
 
     current_index = 0
-
     # Create a session state to persist the current_index
     current_index = st.session_state.get("current_index", 0)
 
     with col1:
-        if st.button("◀️ Previous"):
+        if st.button("◀️ Previous", use_container_width=True):
             current_index = (current_index - 1) % len(images)
 
     with col2:
         st.write("")
 
     with col3:
-        if st.button("Next ▶️"):
+        if st.button("Next ▶️", use_container_width=True):
             current_index = (current_index + 1) % len(images)
 
-    # Save the current_index to session state
     st.session_state.current_index = current_index
 
-    st.image(images[current_index])
+    st.image(images[current_index], use_column_width=True)
     st.text(descriptions[current_index])
 
-def main():
-    donate_to_village()
-    poor_village_image()
+st.markdown(centered_title_html, unsafe_allow_html=True)
+st.markdown(centered_subtitle_html, unsafe_allow_html=True)
 
-if __name__ == "__main__":
-    main()
+poor_village_image()
+
