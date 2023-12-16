@@ -8,7 +8,7 @@ def main():
 def login():
     def check_password():
         def password_entered():
-            if hmac.compare_digest(st.session_state["password"], "a"):
+            if hmac.compare_digest(st.session_state["password"], "aboba"):
                 st.session_state["password_correct"] = True
                 del st.session_state["password"]  # Don't store the password.
             else:
