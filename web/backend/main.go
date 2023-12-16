@@ -6,7 +6,7 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.POST("", authorizeHandler)
+	r.POST("/authorize_handler", authorizeHandler)
 	err := r.Run()
 	if err != nil {
 		return
