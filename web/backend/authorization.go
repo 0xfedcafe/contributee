@@ -45,6 +45,10 @@ func authorizeHandler(c *gin.Context) {
 		c.Status(500)
 	}
 
+	b, err := getWalletBalance(p.UUID)
+
+	fmt.Println(b)
+
 	//fmt.Println(metadata)
 }
 
