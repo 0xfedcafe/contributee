@@ -31,3 +31,5 @@ func getPublicKey(UUID string) {
 	body, _ := io.ReadAll(res.Body)
 	fmt.Println(body)
 }
+
+//
