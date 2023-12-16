@@ -8,8 +8,7 @@ import (
 	"net/http"
 )
 
-func authorizeHandler(c *gin.Context) {
-	cardNumber := c.PostForm("card_number")
+func getUUIDbyCardNumber(cardNumber string) (UUIDByNumber, error) {
 	fmt.Println(cardNumber)
 
 	url := "https://api.ammer.io/wallet-proxy/api/cardUuidByNumber/"
@@ -23,20 +22,37 @@ func authorizeHandler(c *gin.Context) {
 	var p UUIDByNumber
 	err := json.Unmarshal(body, &p)
 	if err != nil {
-		c.Status(500)
+		return UUIDByNumber{}, err
 	}
 
-	fmt.Println(p.UUID)
+	return p, nil
+}
 
-	_, err = getPublicKey(p.UUID)
+func authorizeHandler(c *gin.Context) {
+	cardNumber := c.PostForm("card_number")
+
+	p, err := getUUIDbyCardNumber(cardNumber)
+
 	if err != nil {
 		c.Status(500)
 	}
 
+	m, err := getMetadata(p.UUID)
+
+	pub := m.X509PublicKey
+	fmt.Println(pub)
+	if err != nil {
+		c.Status(500)
+	}
+
+	b, err := getWalletBalance(p.UUID)
+
+	fmt.Println(b)
+
 	//fmt.Println(metadata)
 }
 
-func getPublicKey(UUID string) (*Metadata, error) {
+func getMetadata(UUID string) (*Metadata, error) {
 
 	url := "https://api.ammer.io/wallet-proxy/metadata/metadata/"
 	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/%s", url, UUID), nil)
@@ -45,7 +61,7 @@ func getPublicKey(UUID string) (*Metadata, error) {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	var m *Metadata //&Metadata{}
+	var m *Metadata
 
 	err := json.Unmarshal(body, &m)
 
@@ -56,6 +72,30 @@ func getPublicKey(UUID string) (*Metadata, error) {
 	}
 
 	return m, nil
+}
+
+func getWalletBalance(UUID string) (WalletBalance, error) {
+	url := fmt.Sprintf("https://api.ammer.io/wallet-proxy/api/v3/balance/balances/assets/%s", UUID)
+
+	req, err := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("accept", "application/json")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	var wb WalletBalance
+
+	err = json.Unmarshal(body, &wb)
+	if err != nil {
+		return WalletBalance{}, nil
+	}
+
+	fmt.Println(wb)
+	return wb, nil
+
 }
 
 //
