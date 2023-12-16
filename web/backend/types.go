@@ -6,13 +6,13 @@ type UUIDByNumber struct {
 }
 
 type Metadata struct {
-	Platform          string `json:"platform"`
-	Alias             string `json:"alias"`
+	Platform          string `json:"platform,omitempty"`
+	Alias             string `json:"alias,omitempty"`
 	AccountId         string `json:"accountId"`
 	X509PublicKeyHash string `json:"x509PublicKeyHash"`
 	X509PublicKey     string `json:"x509PublicKey"`
 	CardNumber        string `json:"cardNumber"`
 	CardIssuer        int    `json:"cardIssuer"`
-	FirstName         []int  `json:"firstName"`
-	LastName          []int  `json:"lastName"`
+	FirstName         []int  `json:"firstName,omitempty"`
+	LastName          []int  `json:"lastName,omitempty"`
 }
