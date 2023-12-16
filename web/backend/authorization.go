@@ -8,7 +8,7 @@ import (
 )
 
 func authorize_handler(c gin.Context) {
-	_ := c.PostFormArray("card_number")
+	_ = c.PostFormArray("card_number")
 	url := "https://api.ammer.io/wallet-proxy/metadata/metadata/cardId"
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("accept", "application/json")
