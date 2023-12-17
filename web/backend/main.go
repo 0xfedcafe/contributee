@@ -6,8 +6,9 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.POST("/authorize_handler", authorizeHandler)
+	r.POST("/authorize", authorizeHandler)
 	r.POST("/submit_vote", donationHandler)
+	r.POST("/upload", uploadFileHandler)
 	err := r.Run()
 
 	if err != nil {

@@ -90,3 +90,15 @@ type Transaction struct {
 	PayloadTransform          string      `json:"payloadTransform"`
 	CreatedTimestamp          int64       `json:"createdTimestamp"`
 }
+
+type PendingTransaction struct {
+	Transaction  *Transaction
+	connectionId string
+	cardUUID     string
+}
+
+type Element struct {
+	AccountID string `json:"accountId"`
+	Start     int    `json:"start"`
+	Offset    int    `json:"offset"`
+}

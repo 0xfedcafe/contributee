@@ -60,7 +60,7 @@ func authorizeHandler(c *gin.Context) {
 	}
 	transactionId := uuid.New().String()
 	transactionGroupId := uuid.New().String()
-	template := TransactionTemplate{
+	template := &TransactionTemplate{
 		NetworkFee: NetworkFee{
 			NetworkFee:   0,
 			UnitPrice:    0,
@@ -80,16 +80,14 @@ func authorizeHandler(c *gin.Context) {
 		Amount: 0,
 		Memo:   "login",
 	}
+
 	fmt.Println(walletID, address)
-	getTemplate := sendTransactionTemplate(template)
+	getTemplate := createTransaction(template)
 	if !getTemplate {
 		c.Status(500)
 	}
-	transaction, err := lookupTransaction(transactionId, transactionGroupId)
-	if err != nil {
-		c.Status(500)
-	}
-	fmt.Println(transaction)
+
+	pendingTransactions[transactionId] = &PendingTransaction{nil, "", p.UUID}
 
 	b, err := getWalletBalance(p.UUID)
 
@@ -141,7 +139,6 @@ func getWalletBalance(UUID string) (WalletBalance, error) {
 
 	fmt.Println(wb)
 	return wb, nil
-
 }
 
 //
