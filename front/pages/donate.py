@@ -1,7 +1,5 @@
 import streamlit as st
-import pandas as pd
 
-# Dummy data representing poor villages
 centered_title_html = """
     <div style="display: flex; justify-content: center; align-items: center;">
         <h1 style="text-align: center;">Make a donation!</h1>
@@ -14,6 +12,7 @@ centered_subtitle_html = """
     </div>
 """
 
+# Dummy data representing poor villages
 descr1 = """Hope Haven - Kenya 
 Nestled in the rural outskirts of Nairobi, Kenya, Hope Haven is home to 500 resilient individuals. 
 However, with an 80% poverty rate, this village faces challenges in accessing clean water and educational 
@@ -32,17 +31,22 @@ economic hardships and inadequate infrastructure. Your support can empower the r
 contribute to a brighter future."
 """
 
+# List of image paths or URLs
 images = ["vil1.jpg", "vil2.jpg", "vil3.jpg"]
 descriptions = [descr1, descr2, descr3]
 width_const = 800
-
+col1, col2, col3 = st.columns(3)
+custom_css = """
+        <style>
+            /* Example: Change the font to 'Arial, sans-serif' */
+            body {
+                font-family: 'Arial', sans-serif;
+            }
+        </style>
+    """
 
 def poor_village_image():
-    # List of image paths or URLs
 
-    col1, col2, col3 = st.columns(3)
-
-    current_index = 0
     # Create a session state to persist the current_index
     current_index = st.session_state.get("current_index", 0)
 
@@ -61,7 +65,6 @@ def poor_village_image():
 
     st.image(images[current_index], use_column_width=True)
     st.text(descriptions[current_index])
-
 
 st.markdown(centered_title_html, unsafe_allow_html=True)
 st.markdown(centered_subtitle_html, unsafe_allow_html=True)
