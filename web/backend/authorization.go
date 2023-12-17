@@ -29,6 +29,8 @@ func getUUIDbyCardNumber(cardNumber string) (*UUIDByNumber, error) {
 	return p, nil
 }
 
+//
+
 func (env *Env) loginHandler(c *gin.Context) {
 	cardNumber := c.PostForm("card_number")
 	p, err := getUUIDbyCardNumber(cardNumber)
