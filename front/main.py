@@ -3,6 +3,10 @@ import requests
 import streamlit_extras
 from streamlit_extras.switch_page_button import switch_page
 
+# Adjust colors and fonts here
+text_color_dark = "#353638"
+text_color_light = "#8D8C8A"
+font_size = "20px"
 
 url = "https://backend"
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
@@ -37,21 +41,15 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Adjust colors and fonts here
-text_color_dark = "#353638"
-text_color_light = "#8D8C8A"
-
 centered_welcome_title_html = f"""
     <div style="display: flex; justify-content: center; align-items: center;">
         <h1 style="text-align: center; color: {text_color_light};"><b>Welcome to Contributee!</b></h1>
     </div>
 """
 
-
 def make_post_request(data):
     response = requests.post(url, data=data)
     return response
-
 
 def login_page():
     st.markdown(centered_welcome_title_html, unsafe_allow_html=True)
@@ -77,11 +75,9 @@ def login_page():
         else:
             st.error("Invalid credentials!")
 
-
 def main():
     st.markdown("""<div style="margin:250px"></div>""", unsafe_allow_html=True)
     login_page()
-
 
 if __name__ == "__main__":
     main()

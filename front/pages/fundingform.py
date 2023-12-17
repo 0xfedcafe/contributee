@@ -9,6 +9,8 @@ st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 text_color_light = "#8D8C8A"
 font_family = "Arial, sans-serif"
 
+st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
+
 hide_streamlit_style = """
 <style>
     #root > div:nth-child(1) > div > div > div > div > section > div {padding-top: 0rem;}
@@ -49,5 +51,5 @@ submit = st.button("Submit form!")
 if submit and (fundraiser, desc, rec, im is not None):
     requests.post(url=back_url,
                   data={"fundraiser": fundraiser, "desc": desc, "rec": rec, "im": im, "date": datetime.now()})
-else:
+elif submit:
     st.text("Please fill out the form!")
