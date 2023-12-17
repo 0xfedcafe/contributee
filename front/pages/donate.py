@@ -29,6 +29,15 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+custom_css = """
+    <style>
+        .stTitle {pointer-events: none !important;}
+        .stMenuItem {pointer-events: none !important;}
+    </style>
+"""
+
+st.markdown(custom_css, unsafe_allow_html=True)
+
 centered_subtitle_html = f"""
     <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
         <h1 style="text-align: center; margin: -20px; font-size: 26px; color: {text_color_light}; 

@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 import requests
 
 # Adjust colors and fonts here
@@ -40,7 +41,7 @@ col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
     offer = st.button("Add offer", use_container_width=True)
     if offer:
-        requests.post(url="https://aboba.com")
+        switch_page("addoffer")
 
 curs = [("BTC", "UAH", 2, "https://backend.com"), ("ETH", "RUB", 3, "test"), ("DC", "USD", 10, "test"), ("ETH", "aa", "100", "test"), ("BTC", "UAH", 2, "test"),
         ("ETH", "RUB", 3, "test"), ("ETH", "USD", 10, "test"), ("ETH", "SEK", "100", "test")]
