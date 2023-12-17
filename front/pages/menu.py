@@ -3,6 +3,7 @@ from streamlit_extras.switch_page_button import switch_page
 import requests
 
 back_url = ""
+text_color_light = "#8D8C8A"
 
 centered_button = """
     <style>
@@ -39,11 +40,13 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("""<div>
-                <h1 style="white-space: nowrap; text-align:center, display:inline;">Welcome to Contributee central hub!</h1>
-            </div>""",
-            unsafe_allow_html=True
-            )
+centered_welcome_title_html = f"""
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <h1 style="text-align: center; color: {text_color_light};"><b>Welcome to Contributee centrul hub!</b></h1>
+    </div>
+"""
+
+st.markdown(centered_welcome_title_html, unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns([1, 1, 1])
 with col2:

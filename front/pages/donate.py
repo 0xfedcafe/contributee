@@ -1,8 +1,6 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
-back_url = ""
-
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
 # Adjust colors, fonts and line spacing here
@@ -77,7 +75,7 @@ descr3 = f"""
 
 # Consts
 images = ["bild1.jpg", "bild2.jpg", "bild3.jpg"]
-descriptions = [descr1, descr2, descr3] # requests.get(f"{url=back_url}")
+descriptions = [descr1, descr2, descr3]
 width_const = 700
 fundraiser_names = ["<b>Ammer Cards", "<b>Asklio", "<b>Venture Labs Mobility"]
 wallet_numbers = ["<b>EE32183921839213821", "<b>EG24583921533276821", "<b>EG86754361533276823"]
@@ -85,12 +83,20 @@ wallet_numbers = ["<b>EE32183921839213821", "<b>EG24583921533276821", "<b>EG8675
 # Create a session state to persist the current_index
 current_index = st.session_state.get("current_index", 0)
 
+col1, col2, col3 = st.columns([0.1,0.8,0.1])
+
+with col1:
+    # taskbar
+    if (st.button("Return to menu", use_container_width=True)):
+        switch_page("menu")
+
 # Title
-st.markdown(f"""
-    <div style="display: flex; justify-content: center; 
-    text-align: center; margin: -25px; font-size: 50px; font-family: sans-serif; color: {text_color_light}; 
-    font-family: {font_family}; line-height: 2.0"> <b>Make a donation</div>
-""", unsafe_allow_html=True)
+with col2:
+    st.markdown(f"""
+        <div style="display: flex; justify-content: center; 
+        text-align: center; margin: -25px; font-size: 50px; font-family: sans-serif; color: {text_color_light}; 
+        font-family: {font_family}; line-height: 2.0"> <b>Make a donation</div>
+    """, unsafe_allow_html=True)
 
 col0, col1, col2, col3, col4 = st.columns([0.2, 0.05, 0.75, 0.05, 0.2])
 

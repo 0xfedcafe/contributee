@@ -30,14 +30,21 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-title = f"""
-    <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; color: {text_color_light}; font-family: {font_family}; font-size: 45px;">
-        Crypto Exchange</h1>
-    </div>
-"""
+col1, col2, col3 = st.columns([0.1,0.8,0.1])
 
-st.markdown(title, unsafe_allow_html=True)
+with col1:
+    # taskbar
+    if (st.button("Return to menu", use_container_width=True)):
+        switch_page("menu")
+
+with col2:
+    title = f"""
+        <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
+            <h1 style="text-align: center; color: {text_color_light}; font-family: {font_family}; font-size: 45px;">
+            Crypto Exchange</h1>
+        </div>
+    """
+    st.markdown(title, unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
