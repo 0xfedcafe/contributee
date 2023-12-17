@@ -29,30 +29,19 @@ func getUUIDbyCardNumber(cardNumber string) (UUIDByNumber, error) {
 	return p, nil
 }
 
-func (env *Env) authorizeHandler(c *gin.Context) {
+func (env *Env) loginHandler(c *gin.Context) {
 	cardNumber := c.PostForm("card_number")
-
 	p, err := getUUIDbyCardNumber(cardNumber)
 
 	if err != nil {
 		c.Status(500)
+		return
 	}
 
-	loggedIn, _, err := isLoggedIn(env.db, cardNumber)
-	if loggedIn {
-		c.Status(200)
-	}
-
-	m, err := getMetadata(p.UUID)
-
-	pub := m.X509PublicKey
-	fmt.Println(pub)
-	if err != nil {
-		c.Status(500)
-	}
 	wb, err := getWalletBalance(p.UUID)
 	if err != nil {
 		c.Status(500)
+		return
 	}
 	fmt.Println(wb)
 	var walletID string
@@ -90,6 +79,7 @@ func (env *Env) authorizeHandler(c *gin.Context) {
 	getTemplate := createTransaction(template)
 	if !getTemplate {
 		c.Status(500)
+		return
 	}
 
 	connectionId := uuid.New().String()
@@ -109,10 +99,12 @@ func (env *Env) authorizeHandler(c *gin.Context) {
 
 	if !<-kk || !<-res || pendingTransactions[transactionId].Transaction.ExternalTransactionStatus != "FINALIZED" {
 		c.Status(500)
+		return
 	}
 
 	err = loginUser(env.db, cardNumber)
 	if err != nil {
+		c.Status(500)
 		return
 	}
 
@@ -127,7 +119,22 @@ func (env *Env) authorizeHandler(c *gin.Context) {
 
 	c.Data(http.StatusOK, "application/json", []byte(fmt.Sprintf(`{"key":"%s"}`, loginToken)))
 
-	//fmt.Println(metadata)
+}
+
+func (env *Env) authorizeHandler(cardNumber string, sessionToken string) bool {
+	loggedIn, _, _ := isLoggedIn(env.db, cardNumber)
+	if loggedIn {
+		tokens, err := getSessionTokens(env.db, cardNumber)
+		if err != nil {
+			return false
+		}
+		for _, token := range tokens {
+			if sessionToken == token {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func getMetadata(UUID string) (*Metadata, error) {

@@ -19,7 +19,7 @@ func main() {
 
 	r := gin.Default()
 	env := &Env{db: db}
-	r.POST("/authorize", env.authorizeHandler)
+	r.POST("/login", env.loginHandler)
 	//r.GET("/fundings", env.fundingsHandler)
 	err = r.Run()
 

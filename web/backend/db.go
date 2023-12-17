@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"go.etcd.io/bbolt"
 	"strconv"
-	"time"
 )
 
 func addUser(db *bbolt.DB, user User) error {
@@ -21,6 +20,22 @@ func addUser(db *bbolt.DB, user User) error {
 		}
 
 		return userBucket.Put([]byte(user.CardNumber), userBytes)
+	})
+}
+
+func addSessionToken(db *bbolt.DB, sessionToken SessionToken) error {
+	return db.Update(func(tx *bbolt.Tx) error {
+		userBucket := tx.Bucket([]byte("SessionToken"))
+		if userBucket == nil {
+			return fmt.Errorf("bucket not found")
+		}
+
+		sessionTokenBytes, err := json.Marshal(sessionToken)
+		if err != nil {
+			return err
+		}
+
+		return userBucket.Put([]byte(sessionToken.Token), sessionTokenBytes)
 	})
 }
 
@@ -127,40 +142,7 @@ func extractFundingByID(db *bbolt.DB, fundingID int) (*Funding, error) {
 	return funding, nil
 }
 
-func isLoggedIn(db *bbolt.DB, cardNumber string) (bool, string, error) {
-	var loggedIn bool
-	var loginTimestamp string
-
-	err := db.View(func(tx *bbolt.Tx) error {
-		userBucket := tx.Bucket([]byte("User"))
-		if userBucket == nil {
-			return fmt.Errorf("bucket not found")
-		}
-
-		userBytes := userBucket.Get([]byte(cardNumber))
-		if userBytes == nil {
-			return fmt.Errorf("user not found")
-		}
-
-		var user User
-		if err := json.Unmarshal(userBytes, &user); err != nil {
-			return err
-		}
-
-		loggedIn = user.LoggedIn
-		loginTimestamp = user.LoginTimestamp
-
-		return nil
-	})
-
-	if err != nil {
-		return false, "", err
-	}
-
-	return loggedIn, loginTimestamp, nil
-}
-
-func loginUser(db *bbolt.DB, cardNumber string) error {
+func loginUser(db *bbolt.DB, cardNumber string, token string) error {
 	return db.Update(func(tx *bbolt.Tx) error {
 		userBucket := tx.Bucket([]byte("User"))
 		if userBucket == nil {
@@ -177,9 +159,6 @@ func loginUser(db *bbolt.DB, cardNumber string) error {
 			return err
 		}
 
-		user.LoggedIn = true
-		user.LoginTimestamp = time.Now().Format(time.RFC3339)
-
 		userBytes, err := json.Marshal(user)
 		if err != nil {
 			return err
@@ -189,23 +168,22 @@ func loginUser(db *bbolt.DB, cardNumber string) error {
 	})
 }
 
-func getSessionTokens(db *bbolt.DB, cardNumber string) ([]SessionToken, error) {
-	var tokens []SessionToken
+func getSessionTokens(db *bbolt.DB, cardNumber string) ([]string, error) {
+	var tokens []string
 	err := db.View(func(tx *bbolt.Tx) error {
 		sessionTokenBucket := tx.Bucket([]byte("SessionToken"))
 		if sessionTokenBucket == nil {
 			return fmt.Errorf("bucket not found")
 		}
+		sessionTokenBytes := sessionTokenBucket.Get([]byte(cardNumber))
+		if sessionTokenBytes == nil {
+			return fmt.Errorf("user not found")
+		}
 
-		return sessionTokenBucket.ForEach(func(k, v []byte) error {
-			var token SessionToken
-			if err := json.Unmarshal(v, &token); err != nil {
-				return err
-			}
-
-			tokens = append(tokens, token)
-			return nil
-		})
+		var sessionToken SessionToken
+		if err := json.Unmarshal(userBytes, &user); err != nil {
+			return err
+		}
 	})
 	return tokens, err
 }

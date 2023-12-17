@@ -9,9 +9,7 @@ type Funding struct {
 }
 
 type User struct {
-	CardNumber     string `json:"cardNumber"`
-	LoggedIn       bool   `json:"loggedIn"`
-	LoginTimestamp string `json:"loginTimestamp"`
+	CardNumber string `json:"cardNumber"`
 }
 
 type Donation struct {
@@ -37,6 +35,6 @@ type Currency struct {
 }
 
 type SessionToken struct {
-	CardNumber string `json:"cardNumber"`
-	Token      string
+	CardNumber string   `json:"cardNumber"`
+	Token      []string `json:"token"`
 }
