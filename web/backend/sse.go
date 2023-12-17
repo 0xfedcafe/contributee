@@ -19,7 +19,7 @@ func setupSseListener(connectionId string, handler func(msg *sse.Event)) bool {
 	return true
 }
 
-func addSseTargetAccount(connectionId string, cardUUID string) (bool, error) {
+func addSseTargetAccount(connectionId string, cardUUID string) bool {
 	element := Element{
 		AccountID: cardUUID,
 		Start:     -1,
@@ -30,7 +30,7 @@ func addSseTargetAccount(connectionId string, cardUUID string) (bool, error) {
 		"elements": elements,
 	})
 	if err != nil {
-		return false, err
+		return false
 	}
 	url := "https://api.ammer.io/push/notifications/v2/stream/submitRequest"
 	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/%s", url, connectionId), bytes.NewBuffer(body))
@@ -38,10 +38,10 @@ func addSseTargetAccount(connectionId string, cardUUID string) (bool, error) {
 	req.Header.Set("Accept", "application/json")
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return false, nil
+		return false
 	}
 	defer res.Body.Close()
-	return res.StatusCode == http.StatusOK, nil
+	return res.StatusCode == http.StatusOK
 }
 
 func sseHandler(msg *sse.Event) {
