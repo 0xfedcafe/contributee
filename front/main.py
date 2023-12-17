@@ -11,12 +11,26 @@ state.user_id = "12345"
 url = "https://backend"
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
+
 hide_streamlit_style = """
 <style>
     #root > div:nth-child(1) > div > div > div > div > section > div {padding-top: 0rem;}
 </style>
 
 """
+
+st.markdown(
+    """
+    <style>
+    [data-testid="collapsedControl"]{
+        display: none;
+        visibility: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 st.markdown("""
@@ -61,7 +75,7 @@ def login_page():
         login_button = st.button("Log in", use_container_width=True)
 
     if login_button:
-        make_post_request(user_input)
+        make_post_request({user_input})
 
 
 def main():

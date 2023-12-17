@@ -2,6 +2,7 @@ import streamlit as st
 
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
+
 # Adjust colors and fonts here
 text_color_light = "#8D8C8A"
 font_family = "Arial, sans-serif"
@@ -13,6 +14,18 @@ hide_streamlit_style = """
 
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+st.markdown(
+    """
+    <style>
+    [data-testid="collapsedControl"]{
+        display: none;
+        visibility: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 centered_subtitle_html = f"""
     <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
@@ -51,6 +64,8 @@ descr3 = f"""
 images = ["vil1.jpg", "vil2.jpg", "vil3.jpg"]
 descriptions = [descr1, descr2, descr3]
 width_const = 700
+fundraiser_names = ["amogus", "aboba", "test"]
+wallet_names = ["32189321983", "543758435", "321321"]
 
 # Create a session state to persist the current_index
 current_index = st.session_state.get("current_index", 0)

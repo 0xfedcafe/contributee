@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
+from datetime import datetime
 
+back_url = "backend.com"
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
 # Adjust colors and fonts here
@@ -24,15 +26,28 @@ title = f"""
 
 st.markdown(title, unsafe_allow_html=True)
 
+st.markdown(
+    """
+    <style>
+    [data-testid="collapsedControl"]{
+        display: none;
+        visibility: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Fields like first name, last name
 fundraiser = st.text_input("Fundraiser name:", placeholder="", max_chars=40)
-desc = st.text_area("Description:", placeholder="", max_chars=350)
 rec = st.text_input("Recipient:", placeholder="", max_chars=40)
+desc = st.text_area("Description:", placeholder="", max_chars=350)
 im = st.file_uploader("Image (Optional):")
 
 submit = st.button("Submit form!")
 
 if submit and (fundraiser, desc, rec, im is not None):
-    requests.post("https://backend.com")
+    requests.post(url=back_url,
+                  data={"fundraiser": fundraiser, "desc": desc, "rec": rec, "im": im, "date": datetime.now()})
 else:
     st.text("Please fill out the form!")

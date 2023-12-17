@@ -14,6 +14,18 @@ hide_streamlit_style = """
 
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+st.markdown(
+    """
+    <style>
+    [data-testid="collapsedControl"]{
+        display: none;
+        visibility: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 title = f"""
     <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
         <h1 style="text-align: center; color: {text_color_light}; font-family: {font_family}; font-size: 45px;">
