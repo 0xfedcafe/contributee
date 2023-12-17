@@ -90,14 +90,16 @@ func authorizeHandler(c *gin.Context) {
 	connectionId := uuid.New().String()
 	pendingTransactions[transactionId] = &PendingTransaction{nil, connectionId, p.UUID}
 
-	res := addSseTargetAccount(connectionId, p.UUID)
-	if !res {
-		c.Status(500)
-	}
+	kk := make(chan bool)
+	res := make(chan bool)
+	go func() {
+		kk <- setupSseListener(connectionId, sseHandler)
+	}()
+	go func() {
+		res <- addSseTargetAccount(connectionId, p.UUID)
+	}()
 
-	//kk := make(chan bool)
-	//kk <-
-	if !setupSseListener(connectionId, sseHandler) {
+	if !<-kk || !<-res {
 		c.Status(500)
 	}
 
