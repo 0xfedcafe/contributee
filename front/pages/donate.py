@@ -1,10 +1,19 @@
 import streamlit as st
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
+
+hide_streamlit_style = """
+<style>
+    #root > div:nth-child(1) > div > div > div > div > section > div {padding-top: 2rem;}
+</style>
+
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 
 centered_subtitle_html = """
     <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; margin: -25px; font-size: 30px;">Donate to transform lives in rural villages!</h1>
+        <h1 style="text-align: center; margin: -20px; font-size: 26px;">Your donation matters. Donate to transform lives in rural villages!</h1>
     </div>
 """
 
@@ -29,28 +38,34 @@ contribute to a brighter future."
 # Consts
 images = ["vil1.jpg", "vil2.jpg", "vil3.jpg"]
 descriptions = [descr1, descr2, descr3]
-width_const = 800
+width_const = 700
 
 # Create a session state to persist the current_index
 current_index = st.session_state.get("current_index", 0)
 
-st.markdown("""<h1 style = "text-align: center; margin: -15px; font-size: 50px;" > Make a donation!</h1>""", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([0.15, 0.7, 0.15])
+st.markdown("""
+    <h1 style="display: flex; justify-content: center;
+    text-align: center; margin: -25px; font-size: 50px; font-family: sans-serif;"><b>Make a donation!</h1>
+""", unsafe_allow_html=True)
+
+col0, col1, col2, col3, col4 = st.columns([0.2, 0.05, 0.75, 0.05, 0.2])
 
 with col1:
-    if st.button("◀️ Previous", use_container_width=True):
+    st.markdown("""<div style="margin:250px"></div>""", unsafe_allow_html=True)  # Add an empty space as a placeholder
+    if st.button("◀️", use_container_width=True, key="prev_button"):
         current_index = (current_index - 1) % len(images)
 
 with col2:
     st.markdown(centered_subtitle_html, unsafe_allow_html=True)
+    st.image(images[current_index], width=width_const, use_column_width=True)
 
 with col3:
-    if st.button("Next ▶️", use_container_width=True):
+    st.markdown("""<div style="margin:250px"></div>""", unsafe_allow_html=True)  # Add an empty space as a placeholder
+    if st.button("▶️", use_container_width=True):
         current_index = (current_index + 1) % len(images)
 
 st.session_state.current_index = current_index
 
-st.image(images[current_index], width=width_const, use_column_width=True)
 
 # Display text
 centered_string= f"""
@@ -70,9 +85,16 @@ wallet_string = f"""
 """
 st.markdown(wallet_string, unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns([0.2, 0.6, 0.2])
+col1, col2, col3 = st.columns([0.2, 0.13, 0.2])
 
 with col2:
-    donate = st.button("Make a donation!", use_container_width=True)
-    if donate:
-        print("Hello!")
+    with st.expander(label="Make a donation!"):
+        # Add a text input field
+        donation_amount = st.text_input("Enter donation amount:", value="")
+
+        # Add a button inside the expander
+        donate = st.button("Send funds")
+
+        if donate:
+            print("Hello!")
+            st.success(f"Donation of {donation_amount} received!")
