@@ -51,6 +51,7 @@ centered_welcome_title_html = f"""
     </div>
 """
 
+
 def login_page():
     st.markdown(centered_welcome_title_html, unsafe_allow_html=True)
 
@@ -69,15 +70,19 @@ def login_page():
         login_button = st.button("Log in", use_container_width=True)
 
     if login_button:
-        response = requests.post(url=back_url, data={"card_number":login_button})
-        if response.json() != False:
-            switch_page("menu")
-        else:
-            st.error("Invalid credentials!")
+        response = requests.post(url=back_url, data={"card_number": login_button})
+        json = response.json()
+        if 'key' in json:
+            if json['key'] != False:
+                switch_page("menu")
+            else:
+                st.error("Invalid credentials!")
+
 
 def main():
     st.markdown("""<div style="margin:250px"></div>""", unsafe_allow_html=True)
     login_page()
+
 
 if __name__ == "__main__":
     main()
