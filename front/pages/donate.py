@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
@@ -72,7 +73,7 @@ descr3 = f"""
 images = ["bild1.jpg", "bild2.jpg", "bild3.jpg"]
 descriptions = [descr1, descr2, descr3]
 width_const = 700
-fundraiser_names = ["amogus", "aboba", "test"]
+fundraiser_names = ["<b>amogus", "<b>aboba", "<b>test"]
 wallet_numbers = ["<b>EE32183921839213821", "<b>EG24583921533276821", "<b>EG86754361533276823"]
 
 # Create a session state to persist the current_index
@@ -115,31 +116,29 @@ st.markdown(centered_string, unsafe_allow_html=True)
 wallet_string = f"""
     <div style="display: flex; justify-content: center; align-items: center;">
         <p style="text-align: center; font-size: 18px; color: {text_color_light}; 
-        font-family: {font_family}; font-size: {font_size};">
+        font-family: {font_family}; font-size: 18; line-height: {line_spacing};">
         Wallet number: {wallet_numbers[current_index]}</p>
     </div>
 """
+
+st.write("")
 st.markdown(wallet_string, unsafe_allow_html=True)
 
 # Fundraiser display
 fundraiser_string = f"""
     <div style="display: flex; justify-content: center; align-items: center;">
-        <p style="text-align: center; font-size: 20px; color: {text_color_light}; margin: 0px"><b>Name of fundraiser: {fundraiser_names[current_index]}</p>
+        <p style="text-align: center; font-size: 18px; color: {text_color_light}; 
+        font-family: {font_family}; font-size: 18; line-height: {line_spacing};">
+        Name of fundraiser : {fundraiser_names[current_index]}</p>
     </div>
 """
 st.markdown(fundraiser_string, unsafe_allow_html=True)
+st.write("")
 
 col1, col2, col3 = st.columns([0.2, 0.13, 0.2])
 
+# Make a donation button
 with col2:
-    # Wallet display
-    wallet_string = f"""
-        <div style="display: flex; justify-content: center; align-items: center;">
-            <p style="text-align: center; font-size: 18px; color: {text_color_light};"><b>Wallet number: {wallet_numbers[current_index]}</p>
-        </div>
-    """
-    st.markdown(wallet_string, unsafe_allow_html=True)
-
     with st.expander("Make a donation"):
         donation_amount = st.text_input("Enter donation amount:", value="")
 
@@ -151,3 +150,8 @@ with col2:
                 st.success(f"Donation of {donation_amount} received!")
             else:
                 st.error(f"Invalid amount: {donation_amount}!")
+
+    # Navigate to the funding page by pressing the text-button
+    if st.button("Or fill out our form to request donations here", key="text_button", help="Optional tooltip",
+             on_click=None, args=None, kwargs=None, disabled=False):
+        switch_page("fundingform")
