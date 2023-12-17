@@ -2,7 +2,9 @@ import streamlit as st
 
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
+# Adjust colors and fonts here
 text_color_light = "#8D8C8A"
+font_family = "Arial, sans-serif"
 
 hide_streamlit_style = """
 <style>
@@ -14,7 +16,8 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 title = f"""
     <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; color: {text_color_light}; font-size: 45px;">Crypto Exchange</h1>
+        <h1 style="text-align: center; color: {text_color_light}; font-family: {font_family}; font-size: 45px;">
+        Crypto Exchange</h1>
     </div>
 """
 

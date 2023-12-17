@@ -2,8 +2,9 @@ import streamlit as st
 
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
+# Adjust colors and fonts here
 text_color_light = "#8D8C8A"
-
+font_family = "Arial, sans-serif"
 
 hide_streamlit_style = """
 <style>
@@ -15,13 +16,13 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 centered_subtitle_html = f"""
     <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; margin: -20px; font-size: 26px; color: {text_color_light};">Your donation matters. 
-        Donate to transform lives in rural villages!</h1>
+        <h1 style="text-align: center; margin: -20px; font-size: 26px; color: {text_color_light}; 
+        font-family: {font_family};">Your donation matters. Donate to transform lives in rural villages!</h1>
     </div>
 """
 
 descr1 = f"""
-    <div style="color: {text_color_light}; text-align: center;">
+    <div style="color: {text_color_light}; font-family: {font_family}; text-align: center;">
         <p>Hope Haven - Kenya</p>
         <p>Nestled in the rural outskirts of Nairobi, Kenya, Hope Haven is home to 500 resilient individuals.</p>
         <p>However, with an 80% poverty rate, this village faces challenges in accessing clean water and educational resources.</p>
@@ -29,7 +30,7 @@ descr1 = f"""
     </div>
 """
 descr2 = f"""
-    <div style="color: {text_color_light}; text-align: center;">
+    <div style="color: {text_color_light}; font-family: {font_family}; text-align: center;">
         <p>Tranquil Meadows - India</p>
         <p>Located in the remote mountains of Himachal Pradesh, India, Tranquil Meadows is a picturesque village with 300 inhabitants.</p>
         <p>Despite its breathtaking landscapes, the village grapples with a 75% poverty rate and lacks essential healthcare facilities.</p>
@@ -38,7 +39,7 @@ descr2 = f"""
 """
 
 descr3 = f"""
-    <div style="color: {text_color_light}; text-align: center;">
+    <div style="color: {text_color_light}; font-family: {font_family}; text-align: center;">
         <p>Unity Village - Sierra Leone</p>
         <p>Situated in the coastal region of Sierra Leone, Unity Village is home to 700 individuals striving for a better life.</p>
         <p>With an 85% poverty rate, the village faces economic hardships and inadequate infrastructure.</p>
@@ -56,7 +57,8 @@ current_index = st.session_state.get("current_index", 0)
 
 st.markdown(f"""
     <h1 style="display: flex; justify-content: center;
-    text-align: center; margin: -25px; font-size: 50px; font-family: sans-serif; color: {text_color_light};"><b>Make a donation!</h1>
+    text-align: center; margin: -25px; font-size: 50px; font-family: sans-serif; color: {text_color_light}; 
+    font-family: {font_family};"> <b>Make a donation!</h1>
 """, unsafe_allow_html=True)
 
 col0, col1, col2, col3, col4 = st.columns([0.2, 0.05, 0.75, 0.05, 0.2])
@@ -91,7 +93,8 @@ st.markdown(centered_string, unsafe_allow_html=True)
 wallet_number = "EE32183921839213821"
 wallet_string = f"""
     <div style="display: flex; justify-content: center; align-items: center;">
-        <p style="text-align: center; font-size: 18px; color: {text_color_light};">Wallet number: {wallet_number}</p>
+        <p style="text-align: center; font-size: 18px; color: {text_color_light}; font-family: {font_family};">
+        Wallet number: {wallet_number}</p>
     </div>
 """
 st.markdown(wallet_string, unsafe_allow_html=True)

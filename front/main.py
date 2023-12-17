@@ -27,6 +27,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Adjust colors and fonts here
 text_color_dark = "#353638"
 text_color_light = "#8D8C8A"
 
