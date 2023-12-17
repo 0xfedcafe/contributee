@@ -8,6 +8,8 @@ text_color_light = "#8D8C8A"
 font_family = "Arial, sans-serif"
 line_spacing = 0.5
 font_size = "15px"
+size_title = "50px"
+max_width = 100
 
 hide_streamlit_style = """
 <style>
@@ -38,16 +40,9 @@ custom_css = """
 
 st.markdown(custom_css, unsafe_allow_html=True)
 
-centered_subtitle_html = f"""
-    <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; margin: -20px; font-size: 26px; color: {text_color_light}; 
-        font-family: {font_family};">Your donation matters. Donate to transform lives in rural villages!</h1>
-    </div>
-"""
-
 descr1 = f"""
     <div style="color: {text_color_light}; font-family: {font_family}; text-align: center; 
-    line-height: {line_spacing}; font-size: {font_size};">
+    line-height: {line_spacing}; font-size: {font_size}; "max-width": {max_width}px">
         <p><b>Hope Haven - Kenya</p>
         <p><b>-</p>
         <p>Nestled in the rural outskirts of Nairobi, Kenya, Hope Haven is home to 500 resilient individuals.</p>
@@ -58,7 +53,7 @@ descr1 = f"""
 
 descr2 = f"""
     <div style="color: {text_color_light}; font-family: {font_family}; text-align: center; 
-    line-height: {line_spacing}; font-size: {font_size};">
+    line-height: {line_spacing}; font-size: {font_size}; "max-width": {max_width}px">
         <p><b>Tranquil Meadows - India</p>
         <p><b>-</p>
         <p>Located in the remote mountains of Himachal Pradesh, India, Tranquil Meadows is a picturesque village with 300 inhabitants.</p>
@@ -69,7 +64,7 @@ descr2 = f"""
 
 descr3 = f"""
     <div style="color: {text_color_light}; font-family: {font_family}; text-align: center; 
-    line-height: {line_spacing}; font-size: {font_size};">
+    line-height: {line_spacing}; font-size: {font_size}; "max-width": {max_width}px">
         <p><b>Unity Village - Sierra Leone</p>
         <p><b>-</p>
         <p>Situated in the coastal region of Sierra Leone, Unity Village is home to 700 individuals striving for a better life.</p>
@@ -82,16 +77,17 @@ descr3 = f"""
 images = ["bild1.jpg", "bild2.jpg", "bild3.jpg"]
 descriptions = [descr1, descr2, descr3]
 width_const = 700
-fundraiser_names = ["<b>amogus", "<b>aboba", "<b>test"]
+fundraiser_names = ["<b>Ammer Cards", "<b>Asklio", "<b>Venture Labs Mobility"]
 wallet_numbers = ["<b>EE32183921839213821", "<b>EG24583921533276821", "<b>EG86754361533276823"]
 
 # Create a session state to persist the current_index
 current_index = st.session_state.get("current_index", 0)
 
+# Title
 st.markdown(f"""
-    <h1 style="display: flex; justify-content: center;
+    <div style="display: flex; justify-content: center; 
     text-align: center; margin: -25px; font-size: 50px; font-family: sans-serif; color: {text_color_light}; 
-    font-family: {font_family};"> <b>Make a donation!</h1>
+    font-family: {font_family}; line-height: 2.0"> <b>Make a donation</div>
 """, unsafe_allow_html=True)
 
 col0, col1, col2, col3, col4 = st.columns([0.2, 0.05, 0.75, 0.05, 0.2])
@@ -101,9 +97,17 @@ with col1:
     if st.button("◀️", use_container_width=True, key="prev_button"):
         current_index = (current_index - 1) % len(images)
 
+# Subtitle
 with col2:
-    st.markdown(centered_subtitle_html, unsafe_allow_html=True)
+    st.markdown(f"""
+        <div style="display: flex; justify-content: center; 
+        text-align: center; margin: -20px; font-size: 26px; font-family: sans-serif; color: {text_color_light}; 
+        font-family: {font_family}; line-height: 2.0"> Your donation matters. Donate to transform lives in rural villages!</div>
+    """, unsafe_allow_html=True)
+    st.write("")
+
     st.image(images[current_index], width=width_const, use_column_width=True)
+    st.write("")
 
 with col3:
     st.markdown("""<div style="margin:250px"></div>""", unsafe_allow_html=True)  # Add an empty space as a placeholder
