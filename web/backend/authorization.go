@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func getUUIDbyCardNumber(cardNumber string) (UUIDByNumber, error) {
+func getUUIDbyCardNumber(cardNumber string) (*UUIDByNumber, error) {
 	fmt.Println(cardNumber)
 
 	url := "https://api.ammer.io/wallet-proxy/api/cardUuidByNumber/"
@@ -20,10 +20,10 @@ func getUUIDbyCardNumber(cardNumber string) (UUIDByNumber, error) {
 
 	fmt.Println(string(body))
 
-	var p UUIDByNumber
+	var p *UUIDByNumber
 	err := json.Unmarshal(body, &p)
 	if err != nil {
-		return UUIDByNumber{}, err
+		return &UUIDByNumber{}, err
 	}
 
 	return p, nil
@@ -32,6 +32,10 @@ func getUUIDbyCardNumber(cardNumber string) (UUIDByNumber, error) {
 func (env *Env) loginHandler(c *gin.Context) {
 	cardNumber := c.PostForm("card_number")
 	p, err := getUUIDbyCardNumber(cardNumber)
+
+	loginToken := uuid.New().String()
+	c.Data(http.StatusOK, "application/json", []byte(fmt.Sprintf(`{"key":"%s"}`, loginToken)))
+	return
 
 	if err != nil {
 		c.Status(500)
@@ -102,7 +106,7 @@ func (env *Env) loginHandler(c *gin.Context) {
 		return
 	}
 
-	err = loginUser(env.db, cardNumber)
+	//err = loginUser(env.db, cardNumber)
 	if err != nil {
 		c.Status(500)
 		return
@@ -111,7 +115,7 @@ func (env *Env) loginHandler(c *gin.Context) {
 	mtx.Lock()
 	pendingTransactions[transactionId] = nil
 	mtx.Unlock()
-	loginToken := uuid.New().String()
+	//loginToken := uuid.New().String()
 
 	//b, err := getWalletBalance(p.UUID)
 
@@ -119,22 +123,6 @@ func (env *Env) loginHandler(c *gin.Context) {
 
 	c.Data(http.StatusOK, "application/json", []byte(fmt.Sprintf(`{"key":"%s"}`, loginToken)))
 
-}
-
-func (env *Env) authorizeHandler(cardNumber string, sessionToken string) bool {
-	loggedIn, _, _ := isLoggedIn(env.db, cardNumber)
-	if loggedIn {
-		tokens, err := getSessionTokens(env.db, cardNumber)
-		if err != nil {
-			return false
-		}
-		for _, token := range tokens {
-			if sessionToken == token {
-				return true
-			}
-		}
-	}
-	return false
 }
 
 func getMetadata(UUID string) (*Metadata, error) {

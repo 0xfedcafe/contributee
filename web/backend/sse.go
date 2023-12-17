@@ -57,6 +57,7 @@ func sseHandler(msg *sse.Event) {
 	mtx.Lock()
 
 	if pendingTransactions[t.TransactionID] == nil {
+		mtx.Unlock()
 		return
 	}
 	p := pendingTransactions[t.TransactionID]
