@@ -1,8 +1,10 @@
 import streamlit as st
 import requests
+from streamlit_extras.switch_page_button import switch_page
+
 from datetime import datetime
 
-back_url = "backend.com"
+back_url = ""
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
 # Adjust colors and fonts here
@@ -11,20 +13,28 @@ font_family = "Arial, sans-serif"
 
 hide_streamlit_style = """
 <style>
-    #root > div:nth-child(1) > div > div > div > div > section > div {padding-top: 0rem;}
+    #root > div:nth-child(1) > div > div > div > div > section > div {padding-top: 2rem;}
 </style>
 
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-title = f"""
-    <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; font-size: 40px; color: {text_color_light}; font-family: {font_family};">
-        Fund those in need!</h1>
-    </div>
-"""
+col1, col2, col3 = st.columns([0.1,0.8,0.1])
 
-st.markdown(title, unsafe_allow_html=True)
+with col1:
+    # taskbar
+    if (st.button("Return to menu", use_container_width=True)):
+        switch_page("menu")
+
+with col2:
+    title = f"""
+        <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
+            <h1 style="text-align: center; font-size: 40px; color: {text_color_light}; font-family: {font_family};">
+            Fund those in need!</h1>
+        </div>
+    """
+
+    st.markdown(title, unsafe_allow_html=True)
 
 st.markdown(
     """
@@ -48,7 +58,7 @@ form_data = {
 
 submit = st.button("Submit form!")
 
-if submit and not (form_data[0] or form_data[1] or form_data[2]):
+if submit and not (form_data["fundraiser"] or form_data["recipient"] or form_data["description"]):
     st.text("Please fill out the form!")
 elif submit:
     requests.post(url=back_url, data=form_data)
