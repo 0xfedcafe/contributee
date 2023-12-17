@@ -1,12 +1,8 @@
 import streamlit as st
 import requests
-from session_state import SessionState
+import streamlit_extras
+from streamlit_extras.switch_page_button import switch_page
 
-# Create a session state
-state = SessionState()
-
-# Example: Set session state data
-state.user_id = "12345"
 
 url = "https://backend"
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
@@ -75,7 +71,11 @@ def login_page():
         login_button = st.button("Log in", use_container_width=True)
 
     if login_button:
-        make_post_request({user_input})
+        response = make_post_request({user_input})
+        if response == True:
+            switch_page("donate")
+        else:
+            st.error("Invalid credentials!")
 
 
 def main():
