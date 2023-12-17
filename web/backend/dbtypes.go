@@ -35,3 +35,8 @@ type Currency struct {
 	Ticker     string `json:"ticker"`
 	Name       string `json:"name"`
 }
+
+type SessionToken struct {
+	CardNumber string `json:"cardNumber"`
+	Token      string
+}

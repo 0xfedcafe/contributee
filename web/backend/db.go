@@ -189,6 +189,27 @@ func loginUser(db *bbolt.DB, cardNumber string) error {
 	})
 }
 
+func getSessionTokens(db *bbolt.DB, cardNumber string) ([]SessionToken, error) {
+	var tokens []SessionToken
+	err := db.View(func(tx *bbolt.Tx) error {
+		sessionTokenBucket := tx.Bucket([]byte("SessionToken"))
+		if sessionTokenBucket == nil {
+			return fmt.Errorf("bucket not found")
+		}
+
+		return sessionTokenBucket.ForEach(func(k, v []byte) error {
+			var token SessionToken
+			if err := json.Unmarshal(v, &token); err != nil {
+				return err
+			}
+
+			tokens = append(tokens, token)
+			return nil
+		})
+	})
+	return tokens, err
+}
+
 func initDB(db *bbolt.DB) error {
 	err := db.Update(func(tx *bbolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte("Funding"))
@@ -212,6 +233,11 @@ func initDB(db *bbolt.DB) error {
 		}
 
 		_, err = tx.CreateBucketIfNotExists([]byte("Exchange"))
+		if err != nil {
+			return err
+		}
+
+		_, err = tx.CreateBucketIfNotExists([]byte("SessionToken"))
 		if err != nil {
 			return err
 		}

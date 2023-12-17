@@ -20,6 +20,7 @@ func main() {
 	r := gin.Default()
 	env := &Env{db: db}
 	r.POST("/authorize", env.authorizeHandler)
+	//r.GET("/fundings", env.fundingsHandler)
 	err = r.Run()
 
 	if err != nil {
