@@ -58,3 +58,7 @@ with col2:
         switch_page("donate")
     elif crypto:
         switch_page("exchange")
+    col3, col4, col5 = st.columns([0.3, 0.4, 0.3])
+    with col4:
+        st.text("\n")
+        st.image("logo.png", width=200, use_column_width=True)
