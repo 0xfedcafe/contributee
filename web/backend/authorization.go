@@ -91,6 +91,10 @@ func authorizeHandler(c *gin.Context) {
 	}
 	fmt.Println(transaction)
 
+	b, err := getWalletBalance(p.UUID)
+
+	fmt.Println(b)
+
 	//fmt.Println(metadata)
 }
 

@@ -75,7 +75,7 @@ type Transaction struct {
 	TransactionID             string `json:"transactionId"`
 	Asset                     string `json:"asset"`
 	InternalTransactionStatus string `json:"internalTransactionStatus"`
-	HexTransactionData        HexTransactionData
+	HexTransactionData        []HexTransactionData
 	TransactionGroupID        string `json:"transactionGroupId"`
 	SubmitterID               string `json:"submitterId"`
 	Sender                    TransactionParticipant
