@@ -46,6 +46,7 @@ func addSseTargetAccount(connectionId string, cardUUID string) bool {
 
 func sseHandler(msg *sse.Event) {
 	var t *Transaction
+	fmt.Println(string(msg.Data))
 	err := json.Unmarshal(msg.Data, &t)
 	if err != nil {
 		fmt.Println(fmt.Sprintf("error in SSE: %s", err.Error()))

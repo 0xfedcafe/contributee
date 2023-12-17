@@ -64,7 +64,7 @@ func authorizeHandler(c *gin.Context) {
 		NetworkFee: NetworkFee{
 			NetworkFee:   0,
 			UnitPrice:    0,
-			UnitQuantity: 0,
+			UnitQuantity: 100000,
 			UnitAssetId:  TumAuthTokenUUID,
 		},
 		TransactionId:      transactionId,
@@ -89,15 +89,15 @@ func authorizeHandler(c *gin.Context) {
 
 	connectionId := uuid.New().String()
 	pendingTransactions[transactionId] = &PendingTransaction{nil, connectionId, p.UUID}
-	eventListener := setupSseListener(connectionId, sseHandler)
-	if !eventListener {
+
+	res := addSseTargetAccount(connectionId, p.UUID)
+	if !res {
 		c.Status(500)
 	}
 
-	res := make(chan bool)
-
-	res <- addSseTargetAccount(connectionId, p.UUID)
-	if err != nil {
+	//kk := make(chan bool)
+	//kk <-
+	if !setupSseListener(connectionId, sseHandler) {
 		c.Status(500)
 	}
 
