@@ -87,7 +87,16 @@ func authorizeHandler(c *gin.Context) {
 		c.Status(500)
 	}
 
-	pendingTransactions[transactionId] = &PendingTransaction{nil, "", p.UUID}
+	connectionId := uuid.New().String()
+	pendingTransactions[transactionId] = &PendingTransaction{nil, connectionId, p.UUID}
+	eventListener := setupSseListener(connectionId, sseHandler)
+	if !eventListener {
+		c.Status(500)
+	}
+	res, err := addSseTargetAccount(connectionId, p.UUID)
+	if err != nil || !res {
+		c.Status(500)
+	}
 
 	b, err := getWalletBalance(p.UUID)
 

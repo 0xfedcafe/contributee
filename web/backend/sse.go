@@ -14,9 +14,9 @@ func setupSseListener(connectionId string, handler func(msg *sse.Event)) bool {
 	client := sse.NewClient(fmt.Sprintf("https://api.ammer.io/push/notifications/v2/stream/subscribe/%s", connectionId))
 	err := client.Subscribe("transaction", handler)
 	if err != nil {
-		return nil, err
+		return false
 	}
-	return client, nil
+	return true
 }
 
 func addSseTargetAccount(connectionId string, cardUUID string) (bool, error) {
