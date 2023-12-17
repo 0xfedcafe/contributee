@@ -29,13 +29,18 @@ func getUUIDbyCardNumber(cardNumber string) (UUIDByNumber, error) {
 	return p, nil
 }
 
-func authorizeHandler(c *gin.Context) {
+func (env *Env) authorizeHandler(c *gin.Context) {
 	cardNumber := c.PostForm("card_number")
 
 	p, err := getUUIDbyCardNumber(cardNumber)
 
 	if err != nil {
 		c.Status(500)
+	}
+
+	loggedIn, _, err := isLoggedIn(env.db, cardNumber)
+	if loggedIn {
+		c.Status(200)
 	}
 
 	m, err := getMetadata(p.UUID)

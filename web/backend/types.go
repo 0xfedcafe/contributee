@@ -1,5 +1,10 @@
 package main
 
+import "go.etcd.io/bbolt"
+
+type Env struct {
+	db *bbolt.DB
+}
 type UUIDByNumber struct {
 	UUID   string `json:"cardUuid"`
 	Issuer int    `json:"issuer"`
