@@ -7,38 +7,6 @@ import (
 	"strconv"
 )
 
-func addUser(db *bbolt.DB, user User) error {
-	return db.Update(func(tx *bbolt.Tx) error {
-		userBucket := tx.Bucket([]byte("User"))
-		if userBucket == nil {
-			return fmt.Errorf("bucket not found")
-		}
-
-		userBytes, err := json.Marshal(user)
-		if err != nil {
-			return err
-		}
-
-		return userBucket.Put([]byte(user.CardNumber), userBytes)
-	})
-}
-
-func addSessionToken(db *bbolt.DB, sessionToken SessionToken) error {
-	return db.Update(func(tx *bbolt.Tx) error {
-		userBucket := tx.Bucket([]byte("SessionToken"))
-		if userBucket == nil {
-			return fmt.Errorf("bucket not found")
-		}
-
-		sessionTokenBytes, err := json.Marshal(sessionToken)
-		if err != nil {
-			return err
-		}
-
-		return userBucket.Put([]byte(sessionToken.Token), sessionTokenBytes)
-	})
-}
-
 func addFunding(db *bbolt.DB, funding Funding) error {
 	return db.Update(func(tx *bbolt.Tx) error {
 		fundingBucket := tx.Bucket([]byte("Funding"))
@@ -149,16 +117,19 @@ func loginUser(db *bbolt.DB, cardNumber string, token string) error {
 			return fmt.Errorf("bucket not found")
 		}
 
+		var user User
 		userBytes := userBucket.Get([]byte(cardNumber))
 		if userBytes == nil {
-			return fmt.Errorf("user not found")
-		}
+			user = User{cardNumber, []string{token}}
+			return nil
+		} else {
 
-		var user User
-		if err := json.Unmarshal(userBytes, &user); err != nil {
-			return err
-		}
+			if err := json.Unmarshal(userBytes, &user); err != nil {
+				return err
+			}
 
+			user.Tokens = append(user.Tokens, token)
+		}
 		userBytes, err := json.Marshal(user)
 		if err != nil {
 			return err
@@ -168,24 +139,24 @@ func loginUser(db *bbolt.DB, cardNumber string, token string) error {
 	})
 }
 
-func getSessionTokens(db *bbolt.DB, cardNumber string) ([]string, error) {
-	var tokens []string
+func getUser(db *bbolt.DB, cardNumber string) (*User, error) {
+	var user *User
 	err := db.View(func(tx *bbolt.Tx) error {
-		sessionTokenBucket := tx.Bucket([]byte("SessionToken"))
-		if sessionTokenBucket == nil {
+		userBucket := tx.Bucket([]byte("User"))
+		if userBucket == nil {
 			return fmt.Errorf("bucket not found")
 		}
-		sessionTokenBytes := sessionTokenBucket.Get([]byte(cardNumber))
-		if sessionTokenBytes == nil {
+		userBytes := userBucket.Get([]byte(cardNumber))
+		if userBytes == nil {
 			return fmt.Errorf("user not found")
 		}
 
-		var sessionToken SessionToken
 		if err := json.Unmarshal(userBytes, &user); err != nil {
 			return err
 		}
+		return nil
 	})
-	return tokens, err
+	return user, err
 }
 
 func initDB(db *bbolt.DB) error {

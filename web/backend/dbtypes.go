@@ -8,10 +8,6 @@ type Funding struct {
 	Picture        []byte `json:"picture"`
 }
 
-type User struct {
-	CardNumber string `json:"cardNumber"`
-}
-
 type Donation struct {
 	DonationID     int     `json:"donationID"`
 	UserCardNumber string  `json:"userCardNumber"`
@@ -34,7 +30,7 @@ type Currency struct {
 	Name       string `json:"name"`
 }
 
-type SessionToken struct {
+type User struct {
 	CardNumber string   `json:"cardNumber"`
-	Token      []string `json:"token"`
+	Tokens     []string `json:"token"`
 }
