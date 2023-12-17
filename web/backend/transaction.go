@@ -8,8 +8,8 @@ import (
 	"net/http"
 )
 
-func sendTransactionTemplate(template TransactionTemplate) bool {
-	url := "https://api.ammer.io/wallet-proxy/api/getTemplate/"
+func createTransaction(template *TransactionTemplate) bool {
+	url := "https://api.ammer.io/wallet-proxy/api/v3/transactions/create/"
 	templateJson, err := json.Marshal(template)
 	if err != nil {
 		return false
@@ -18,7 +18,7 @@ func sendTransactionTemplate(template TransactionTemplate) bool {
 	req.Header.Set("Content-Type", "application/json")
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
-	if res.Status == "200 OK" {
+	if res.StatusCode == http.StatusOK {
 		return true
 	}
 	return false
