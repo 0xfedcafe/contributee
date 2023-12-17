@@ -1,5 +1,12 @@
 import streamlit as st
 import requests
+from session_state import SessionState
+
+# Create a session state
+state = SessionState()
+
+# Example: Set session state data
+state.user_id = "12345"
 
 url = "https://backend"
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
@@ -20,11 +27,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-text_color = "green"
+text_color_dark = "#353638"
+text_color_light = "#8D8C8A"
 
 centered_welcome_title_html = f"""
     <div style="display: flex; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; color: {text_color}"><b>Welcome to Contributee!</b></h1>
+        <h1 style="text-align: center; color: {text_color_light};"><b>Welcome to Contributee!</b></h1>
     </div>
 """
 

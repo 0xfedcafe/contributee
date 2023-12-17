@@ -1,7 +1,8 @@
 import streamlit as st
-import requests
 
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
+
+text_color_light = "#8D8C8A"
 
 hide_streamlit_style = """
 <style>
@@ -11,9 +12,9 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-title = """
+title = f"""
     <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; font-size: 45px;">Crypto Exchange</h1>
+        <h1 style="text-align: center; color: {text_color_light}; font-size: 45px;">Crypto Exchange</h1>
     </div>
 """
 
