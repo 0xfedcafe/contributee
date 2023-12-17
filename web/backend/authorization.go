@@ -93,7 +93,10 @@ func (env *Env) authorizeHandler(c *gin.Context) {
 	}
 
 	connectionId := uuid.New().String()
+
+	mtx.Lock()
 	pendingTransactions[transactionId] = &PendingTransaction{nil, connectionId, p.UUID}
+	mtx.Unlock()
 
 	kk := make(chan bool)
 	res := make(chan bool)

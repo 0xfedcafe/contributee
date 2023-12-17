@@ -1,11 +1,13 @@
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
-
-# Adjust colors and fonts here
+# Adjust colors, fonts and line spacing here
 text_color_light = "#8D8C8A"
 font_family = "Arial, sans-serif"
+line_spacing = 0.5
+font_size = "15px"
 
 hide_streamlit_style = """
 <style>
@@ -35,16 +37,21 @@ centered_subtitle_html = f"""
 """
 
 descr1 = f"""
-    <div style="color: {text_color_light}; font-family: {font_family}; text-align: center;">
-        <p>Hope Haven - Kenya</p>
+    <div style="color: {text_color_light}; font-family: {font_family}; text-align: center; 
+    line-height: {line_spacing}; font-size: {font_size};">
+        <p><b>Hope Haven - Kenya</p>
+        <p><b>-</p>
         <p>Nestled in the rural outskirts of Nairobi, Kenya, Hope Haven is home to 500 resilient individuals.</p>
         <p>However, with an 80% poverty rate, this village faces challenges in accessing clean water and educational resources.</p>
         <p>Your support can bring hope and positive change to the lives of its residents.</p>
     </div>
 """
+
 descr2 = f"""
-    <div style="color: {text_color_light}; font-family: {font_family}; text-align: center;">
-        <p>Tranquil Meadows - India</p>
+    <div style="color: {text_color_light}; font-family: {font_family}; text-align: center; 
+    line-height: {line_spacing}; font-size: {font_size};">
+        <p><b>Tranquil Meadows - India</p>
+        <p><b>-</p>
         <p>Located in the remote mountains of Himachal Pradesh, India, Tranquil Meadows is a picturesque village with 300 inhabitants.</p>
         <p>Despite its breathtaking landscapes, the village grapples with a 75% poverty rate and lacks essential healthcare facilities.</p>
         <p>Your contribution can make a lasting impact on the well-being of this community.</p>
@@ -52,8 +59,10 @@ descr2 = f"""
 """
 
 descr3 = f"""
-    <div style="color: {text_color_light}; font-family: {font_family}; text-align: center;">
-        <p>Unity Village - Sierra Leone</p>
+    <div style="color: {text_color_light}; font-family: {font_family}; text-align: center; 
+    line-height: {line_spacing}; font-size: {font_size};">
+        <p><b>Unity Village - Sierra Leone</p>
+        <p><b>-</p>
         <p>Situated in the coastal region of Sierra Leone, Unity Village is home to 700 individuals striving for a better life.</p>
         <p>With an 85% poverty rate, the village faces economic hardships and inadequate infrastructure.</p>
         <p>Your support can empower the residents of Unity Village and contribute to a brighter future.</p>
@@ -61,11 +70,11 @@ descr3 = f"""
 """
 
 # Consts
-images = ["vil1.jpg", "vil2.jpg", "vil3.jpg"]
+images = ["bild1.jpg", "bild2.jpg", "bild3.jpg"]
 descriptions = [descr1, descr2, descr3]
 width_const = 700
-fundraiser_names = ["amogus", "aboba", "test"]
-wallet_names = ["32189321983", "543758435", "321321"]
+fundraiser_names = ["<b>amogus", "<b>aboba", "<b>test"]
+wallet_numbers = ["<b>EE32183921839213821", "<b>EG24583921533276821", "<b>EG86754361533276823"]
 
 # Create a session state to persist the current_index
 current_index = st.session_state.get("current_index", 0)
@@ -94,7 +103,6 @@ with col3:
 
 st.session_state.current_index = current_index
 
-
 # Display text
 centered_string = f"""
     <div style="display: flex; justify-content: center; align-items: center;">
@@ -105,34 +113,32 @@ centered_string = f"""
 st.markdown(centered_string, unsafe_allow_html=True)
 
 # Wallet display
-wallet_number = "EE32183921839213821"
 wallet_string = f"""
     <div style="display: flex; justify-content: center; align-items: center;">
-        <p style="text-align: center; font-size: 18px; color: {text_color_light}; font-family: {font_family};">
-        Wallet number: {wallet_number}</p>
+        <p style="text-align: center; font-size: 18px; color: {text_color_light}; 
+        font-family: {font_family}; font-size: 18; line-height: {line_spacing};">
+        Wallet number: {wallet_numbers[current_index]}</p>
     </div>
 """
+
+st.write("")
 st.markdown(wallet_string, unsafe_allow_html=True)
+
 # Fundraiser display
 fundraiser_string = f"""
     <div style="display: flex; justify-content: center; align-items: center;">
-        <p style="text-align: center; font-size: 20px; color: {text_color_light}; margin: 0px"><b>Name of fundraiser: {fundraiser_names[current_index]}</p>
+        <p style="text-align: center; font-size: 18px; color: {text_color_light}; 
+        font-family: {font_family}; font-size: 18; line-height: {line_spacing};">
+        Name of fundraiser : {fundraiser_names[current_index]}</p>
     </div>
 """
 st.markdown(fundraiser_string, unsafe_allow_html=True)
+st.write("")
 
 col1, col2, col3 = st.columns([0.2, 0.13, 0.2])
 
+# Make a donation button
 with col2:
-    # Wallet display
-    wallet_number = "EE32183921839213821"
-    wallet_string = f"""
-        <div style="display: flex; justify-content: center; align-items: center;">
-            <p style="text-align: center; font-size: 18px; color: {text_color_light};"><b>Wallet number: {wallet_names[current_index]}</p>
-        </div>
-    """
-    st.markdown(wallet_string, unsafe_allow_html=True)
-
     with st.expander("Make a donation"):
         donation_amount = st.text_input("Enter donation amount:", value="")
 
@@ -144,3 +150,8 @@ with col2:
                 st.success(f"Donation of {donation_amount} received!")
             else:
                 st.error(f"Invalid amount: {donation_amount}!")
+
+    # Navigate to the funding page by pressing the text-button
+    if st.button("Or fill out our form to request donations here", key="text_button", help="Optional tooltip",
+             on_click=None, args=None, kwargs=None, disabled=False):
+        switch_page("fundingform")

@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"github.com/r3labs/sse/v2"
 	"net/http"
+	"sync"
 )
 
 var pendingTransactions = make(map[string]*PendingTransaction)
+var mtx sync.Mutex
 
 func setupSseListener(connectionId string, handler func(msg *sse.Event)) bool {
 	client := sse.NewClient(fmt.Sprintf("https://api.ammer.io/push/notifications/v2/stream/subscribe/%s", connectionId))
@@ -52,13 +54,15 @@ func sseHandler(msg *sse.Event) {
 		fmt.Println(fmt.Sprintf("error in SSE: %s", err.Error()))
 		return
 	}
+	mtx.Lock()
 
 	if pendingTransactions[t.TransactionID] == nil {
 		return
 	}
-
 	p := pendingTransactions[t.TransactionID]
 	p.Transaction = t
+
+	mtx.Unlock()
 }
 
 //

@@ -1,14 +1,35 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/yeqown/go-qrcode/v2"
+	"github.com/yeqown/go-qrcode/writer/standard"
 	"net/http"
 	"path/filepath"
 	"strings"
 )
 
 func donationHandler(c *gin.Context) {
+	wr := c.PostForm("wallet")
+	qrc, err := qrcode.New(wr)
+	if err != nil {
+		fmt.Printf("could not generate QRCode: %v", err)
+		return
+	}
 
+	w, err := standard.New("qr.jpeg", standard.WithHalftone("./test2.png"),
+		standard.WithQRWidth(25))
+	if err != nil {
+		fmt.Printf("standard.New failed: %v", err)
+		return
+	}
+
+	// save file
+	if err = qrc.Save(w); err != nil {
+		fmt.Printf("could not save image: %v", err)
+	}
+	c.String(200, "Wow")
 }
 
 func uploadFileHandler(c *gin.Context) {
