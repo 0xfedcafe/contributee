@@ -159,6 +159,8 @@ func getUser(db *bbolt.DB, cardNumber string) (*User, error) {
 	return user, err
 }
 
+//
+
 func initDB(db *bbolt.DB) error {
 	err := db.Update(func(tx *bbolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte("Funding"))
