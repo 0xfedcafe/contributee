@@ -4,7 +4,6 @@ st.set_page_config(layout="wide")
 
 centered_subtitle_html = """
     <div style="white-space: nowrap; display: inline; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; margin: -25px; font-size: 50px;">Make a donation!</h1>
         <h1 style="text-align: center; margin: -25px; font-size: 30px;">Donate to transform lives in rural villages!</h1>
     </div>
 """
@@ -35,15 +34,17 @@ width_const = 800
 # Create a session state to persist the current_index
 current_index = st.session_state.get("current_index", 0)
 
-st.markdown(centered_subtitle_html, unsafe_allow_html=True)
+st.markdown("""<h1 style = "text-align: center; margin: -15px; font-size: 50px;" > Make a donation!</h1>""", unsafe_allow_html=True)
+col1, col2, col3 = st.columns([0.15, 0.7, 0.15])
 
-col0, col1, col2, col3, col4 = st.columns(5)
-
-with col0:
+with col1:
     if st.button("◀️ Previous", use_container_width=True):
         current_index = (current_index - 1) % len(images)
 
-with col4:
+with col2:
+    st.markdown(centered_subtitle_html, unsafe_allow_html=True)
+
+with col3:
     if st.button("Next ▶️", use_container_width=True):
         current_index = (current_index + 1) % len(images)
 

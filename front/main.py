@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-url = "https://backend.com"
+url = "https://backend"
 st.set_page_config(layout = "wide")
 
 st.markdown("""
@@ -20,12 +20,19 @@ centered_welcome_title_html = """
 
 def make_post_request(data):
     response = requests.post(url, data=data)
-    print(data)
     return response
 
 def login_page():
     st.markdown(centered_welcome_title_html, unsafe_allow_html=True)
+
+    # Add an empty line
+    st.write("\n")
+
     user_input = st.text_input("Enter your card number here", type="password", key="password")
+
+    # Add an empty line
+    st.write("\n")
+    st.write("\n")
 
     col1, col2, col3 = st.columns([0.45,0.14,0.45])
 
