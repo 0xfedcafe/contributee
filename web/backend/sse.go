@@ -25,7 +25,7 @@ func addSseTargetAccount(connectionId string, cardUUID string) bool {
 	element := Element{
 		AccountID: cardUUID,
 		Start:     -1,
-		Offset:    15,
+		Offset:    1,
 	}
 	elements := []Element{element}
 	body, err := json.Marshal(map[string][]Element{
@@ -54,15 +54,16 @@ func sseHandler(msg *sse.Event) {
 		fmt.Println(fmt.Sprintf("error in SSE: %s", err.Error()))
 		return
 	}
-	mtx.Lock()
+	//mtx.Lock()
 
 	if pendingTransactions[t.TransactionID] == nil {
+		//mtx.Unlock()
 		return
 	}
 	p := pendingTransactions[t.TransactionID]
 	p.Transaction = t
 
-	mtx.Unlock()
+	//mtx.Unlock()
 }
 
 //

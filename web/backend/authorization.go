@@ -84,9 +84,9 @@ func (env *Env) loginHandler(c *gin.Context) {
 
 	connectionId := uuid.New().String()
 
-	mtx.Lock()
+	//mtx.Lock()
 	pendingTransactions[transactionId] = &PendingTransaction{nil, connectionId, p.UUID}
-	mtx.Unlock()
+	//mtx.Unlock()
 
 	kk := make(chan bool)
 	res := make(chan bool)
@@ -97,41 +97,39 @@ func (env *Env) loginHandler(c *gin.Context) {
 		res <- addSseTargetAccount(connectionId, p.UUID)
 	}()
 
-	if !<-kk || !<-res || pendingTransactions[transactionId].Transaction.ExternalTransactionStatus != "FINALIZED" {
+	if !<-kk || !<-res {
 		c.Status(500)
 		return
 	}
 
-	err = loginUser(env.db, cardNumber)
+	//mtx.Lock()
+	pendingTransactions[transactionId] = nil
+	//mtx.Unlock()
+
+	token := uuid.New().String()
+
+	err = loginUser(env.db, cardNumber, token)
 	if err != nil {
 		c.Status(500)
 		return
 	}
 
-	mtx.Lock()
-	pendingTransactions[transactionId] = nil
-	mtx.Unlock()
-	loginToken := uuid.New().String()
-
 	//b, err := getWalletBalance(p.UUID)
 
 	//fmt.Println(b)
 
-	c.Data(http.StatusOK, "application/json", []byte(fmt.Sprintf(`{"key":"%s"}`, loginToken)))
+	c.Data(http.StatusOK, "application/json", []byte(fmt.Sprintf(`{"key":"%s"}`, token)))
 
 }
 
 func (env *Env) authorizeHandler(cardNumber string, sessionToken string) bool {
-	loggedIn, _, _ := isLoggedIn(env.db, cardNumber)
-	if loggedIn {
-		tokens, err := getSessionTokens(env.db, cardNumber)
-		if err != nil {
-			return false
-		}
-		for _, token := range tokens {
-			if sessionToken == token {
-				return true
-			}
+	user, err := getUser(env.db, cardNumber)
+	if err != nil {
+		return false
+	}
+	for _, token := range user.Tokens {
+		if sessionToken == token {
+			return true
 		}
 	}
 	return false
