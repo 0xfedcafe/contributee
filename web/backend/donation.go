@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/yeqown/go-qrcode/v2"
-	"github.com/yeqown/go-qrcode/writer/standard"
+	qrcode "github.com/skip2/go-qrcode"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -12,22 +10,9 @@ import (
 
 func donationHandler(c *gin.Context) {
 	wr := c.PostForm("wallet")
-	qrc, err := qrcode.New(wr)
+	_, err := qrcode.Encode(wr, qrcode.Medium, 256)
 	if err != nil {
-		fmt.Printf("could not generate QRCode: %v", err)
 		return
-	}
-
-	w, err := standard.New("qr.jpeg", standard.WithHalftone("./test2.png"),
-		standard.WithQRWidth(25))
-	if err != nil {
-		fmt.Printf("standard.New failed: %v", err)
-		return
-	}
-
-	// save file
-	if err = qrc.Save(w); err != nil {
-		fmt.Printf("could not save image: %v", err)
 	}
 	c.String(200, "Wow")
 }

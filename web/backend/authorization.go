@@ -107,13 +107,25 @@ func (env *Env) authorizeHandler(c *gin.Context) {
 		res <- addSseTargetAccount(connectionId, p.UUID)
 	}()
 
-	if !<-kk || !<-res {
+	if !<-kk || !<-res || pendingTransactions[transactionId].Transaction.ExternalTransactionStatus != "FINALIZED" {
 		c.Status(500)
 	}
 
-	b, err := getWalletBalance(p.UUID)
+	err = loginUser(env.db, cardNumber)
+	if err != nil {
+		return
+	}
 
-	fmt.Println(b)
+	mtx.Lock()
+	pendingTransactions[transactionId] = nil
+	mtx.Unlock()
+	loginToken := uuid.New().String()
+
+	//b, err := getWalletBalance(p.UUID)
+
+	//fmt.Println(b)
+
+	c.Data(http.StatusOK, "application/json", []byte(fmt.Sprintf(`{"key":"%s"}`, loginToken)))
 
 	//fmt.Println(metadata)
 }
