@@ -38,16 +38,17 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Fields like first name, last name
-fundraiser = st.text_input("Fundraiser name:", placeholder="", max_chars=40)
-rec = st.text_input("Recipient:", placeholder="", max_chars=40)
-desc = st.text_area("Description:", placeholder="", max_chars=350)
-im = st.file_uploader("Image (Optional):")
+# Collect data from the user
+form_data = {
+    'fundraiser': st.text_input("Fundraiser name:", placeholder="", max_chars=40),
+    'recipient': st.text_input("Recipient:", placeholder="", max_chars=40),
+    'description': st.text_area("Description:", placeholder="", max_chars=350),
+    'img': st.file_uploader("Image (Optional):")
+}
 
 submit = st.button("Submit form!")
 
-if submit and (fundraiser, desc, rec, im is not None):
-    requests.post(url=back_url,
-                  data={"fundraiser": fundraiser, "desc": desc, "rec": rec, "im": im, "date": datetime.now()})
-elif submit:
+if submit and not (form_data[0] or form_data[1] or form_data[2]):
     st.text("Please fill out the form!")
+elif submit:
+    requests.post(url=back_url, data=form_data)

@@ -14,11 +14,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
     page_title="Your Custom Title",
     page_icon=":smiley:",
-    menu_items={
-        "Home": None,
-        "About": None,
-        "Contact": None
-    }
 )
 
 hide_streamlit_style = """
