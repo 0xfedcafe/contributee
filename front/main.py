@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-url = "https://backend"
+url = "https://backend.com"
 st.set_page_config(layout = "wide")
 
 st.markdown("""
@@ -20,6 +20,7 @@ centered_welcome_title_html = """
 
 def make_post_request(data):
     response = requests.post(url, data=data)
+    print(data)
     return response
 
 def login_page():

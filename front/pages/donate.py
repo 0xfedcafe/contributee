@@ -30,7 +30,7 @@ contribute to a brighter future."
 # Consts
 images = ["vil1.jpg", "vil2.jpg", "vil3.jpg"]
 descriptions = [descr1, descr2, descr3]
-width_const = 200
+width_const = 800
 
 # Create a session state to persist the current_index
 current_index = st.session_state.get("current_index", 0)
@@ -51,13 +51,23 @@ st.session_state.current_index = current_index
 
 st.image(images[current_index], width=width_const, use_column_width=True)
 
-centered_subtitle_html = f"""
+# Display text
+centered_string= f"""
     <div style="display: flex; justify-content: center; align-items: center;">
-        <p style="text-align: center; font-size: 14px;">{descriptions[current_index]}</p>
+        <p style="text-align: center; font-size: 18px; margin: 0px">{descriptions[current_index]}</p>
     </div>
 """
 
-st.markdown(centered_subtitle_html, unsafe_allow_html=True)
+st.markdown(centered_string, unsafe_allow_html=True)
+
+# Wallet display
+wallet_number = "EE32183921839213821"
+wallet_string = f"""
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <p style="text-align: center; font-size: 18px;">Wallet number: {wallet_number}</p>
+    </div>
+"""
+st.markdown(wallet_string, unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns([0.2, 0.6, 0.2])
 
