@@ -9,8 +9,17 @@ text_color_light = "#8D8C8A"
 font_size = "20px"
 
 url = "https://backend"
-st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
-
+st.set_page_config(
+    layout="wide",
+    initial_sidebar_state="collapsed",
+    page_title="Your Custom Title",
+    page_icon=":smiley:",
+    menu_items={
+        "Home": None,
+        "About": None,
+        "Contact": None
+    }
+)
 
 hide_streamlit_style = """
 <style>
@@ -71,7 +80,7 @@ def login_page():
     if login_button:
         response = make_post_request({user_input})
         if response == True:
-            switch_page("donate")
+            switch_page("menu")
         else:
             st.error("Invalid credentials!")
 
