@@ -2,6 +2,8 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import requests
 
+back_url = ""
+
 # Adjust colors and fonts here
 text_color_light = "#8D8C8A"
 font_family = "Arial, sans-serif"

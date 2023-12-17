@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 from datetime import datetime
 
-back_url = "backend.com"
+back_url = ""
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
 # Adjust colors and fonts here
@@ -48,7 +48,7 @@ form_data = {
 
 submit = st.button("Submit form!")
 
-if submit and not (form_data[0] or form_data[1] or form_data[2]):
+if submit and not (form_data["fundraiser"] or form_data["recipient"] or form_data["description"]):
     st.text("Please fill out the form!")
 elif submit:
     requests.post(url=back_url, data=form_data)

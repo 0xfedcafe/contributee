@@ -1,6 +1,8 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
+back_url = ""
+
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
 # Adjust colors, fonts and line spacing here
@@ -75,7 +77,7 @@ descr3 = f"""
 
 # Consts
 images = ["bild1.jpg", "bild2.jpg", "bild3.jpg"]
-descriptions = [descr1, descr2, descr3]
+descriptions = [descr1, descr2, descr3] # requests.get(f"{url=back_url}")
 width_const = 700
 fundraiser_names = ["<b>Ammer Cards", "<b>Asklio", "<b>Venture Labs Mobility"]
 wallet_numbers = ["<b>EE32183921839213821", "<b>EG24583921533276821", "<b>EG86754361533276823"]

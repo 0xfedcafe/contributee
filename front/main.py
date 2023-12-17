@@ -12,8 +12,8 @@ url = "https://backend"
 st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
-    page_title="Your Custom Title",
-    page_icon=":smiley:",
+    page_title="Contributee",
+    page_icon=":heart:",
 )
 
 hide_streamlit_style = """
