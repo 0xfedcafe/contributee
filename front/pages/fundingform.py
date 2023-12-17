@@ -9,8 +9,6 @@ st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 text_color_light = "#8D8C8A"
 font_family = "Arial, sans-serif"
 
-st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
-
 hide_streamlit_style = """
 <style>
     #root > div:nth-child(1) > div > div > div > div > section > div {padding-top: 0rem;}
