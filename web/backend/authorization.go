@@ -93,8 +93,11 @@ func authorizeHandler(c *gin.Context) {
 	if !eventListener {
 		c.Status(500)
 	}
-	res, err := addSseTargetAccount(connectionId, p.UUID)
-	if err != nil || !res {
+
+	res := make(chan bool)
+
+	res <- addSseTargetAccount(connectionId, p.UUID)
+	if err != nil {
 		c.Status(500)
 	}
 
