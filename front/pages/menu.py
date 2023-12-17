@@ -5,6 +5,16 @@ import requests
 back_url = ""
 text_color_light = "#8D8C8A"
 
+st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
+
+hide_streamlit_style = """
+<style>
+    #root > div:nth-child(1) > div > div > div > div > section > div {padding-top: 2rem;}
+</style>
+
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 centered_button = """
     <style>
         div.stButton > button {
@@ -20,13 +30,6 @@ centered_button = """
     </style>
 """
 
-hide_streamlit_style = """
-<style>
-    #root > div:nth-child(1) > div > div > div > div > section > div {padding-top: 2rem;}
-</style>
-
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 st.markdown(
     """

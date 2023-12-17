@@ -69,7 +69,8 @@ st.markdown(
             align-items: center;
             text-align: center;
             border: 3px solid red; /* Set border style and color for columns */
-            padding: 10px; /* Add padding for better appearance */
+            border-radius: 25px;
+            padding: 20px; /* Add padding for better appearance */
             margin-bottom: 4px; /* Add bottom margin */
         }
     </style>
@@ -87,7 +88,8 @@ centered_button = """
             align-items: center;
             text-align: center;
             border: 3px solid red; /* Set border style and color for buttons */
-            padding: 10px; /* Add padding for better appearance */
+            border-radius: 25px;
+            padding: 20px; /* Add padding for better appearance */
         }
     </style>
 """
@@ -106,7 +108,7 @@ for a in range(cols):
                 unsafe_allow_html=True
             )
             st.markdown(centered_button, unsafe_allow_html=True)
-            button_clicked = st.button(f"BUY {curs[i+4*a][2]}{curs[i+4*a][0]}", i+4*a)
+            button_clicked = st.button(f"BUY {curs[i+4*a][0]}", i+4*a)
 
             if button_clicked:
                 requests.post("...")

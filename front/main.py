@@ -8,7 +8,7 @@ text_color_dark = "#353638"
 text_color_light = "#8D8C8A"
 font_size = "20px"
 
-url = "https://backend"
+back_url = ""
 st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -51,10 +51,6 @@ centered_welcome_title_html = f"""
     </div>
 """
 
-def make_post_request(data):
-    response = requests.post(url, data=data)
-    return response
-
 def login_page():
     st.markdown(centered_welcome_title_html, unsafe_allow_html=True)
 
@@ -73,8 +69,8 @@ def login_page():
         login_button = st.button("Log in", use_container_width=True)
 
     if login_button:
-        response = make_post_request({user_input})
-        if response == True:
+        response = requests.post(url=back_url, data={"card_number":login_button})
+        if response.json() != False:
             switch_page("menu")
         else:
             st.error("Invalid credentials!")
