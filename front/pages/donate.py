@@ -81,7 +81,7 @@ st.session_state.current_index = current_index
 
 
 # Display text
-centered_string= f"""
+centered_string = f"""
     <div style="display: flex; justify-content: center; align-items: center;">
         <p style="text-align: center; font-size: 18px; margin: 0px;">{descriptions[current_index]}</p>
     </div>
@@ -98,17 +98,34 @@ wallet_string = f"""
     </div>
 """
 st.markdown(wallet_string, unsafe_allow_html=True)
+# Fundraiser display
+fundraiser_string = f"""
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <p style="text-align: center; font-size: 20px; color: {text_color_light}; margin: 0px"><b>Name of fundraiser: {fundraiser_names[current_index]}</p>
+    </div>
+"""
+st.markdown(fundraiser_string, unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns([0.2, 0.13, 0.2])
 
 with col2:
-    with st.expander(label="Make a donation!"):
-        # Add a text input field
+    # Wallet display
+    wallet_number = "EE32183921839213821"
+    wallet_string = f"""
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <p style="text-align: center; font-size: 18px; color: {text_color_light};"><b>Wallet number: {wallet_names[current_index]}</p>
+        </div>
+    """
+    st.markdown(wallet_string, unsafe_allow_html=True)
+
+    with st.expander("Make a donation"):
         donation_amount = st.text_input("Enter donation amount:", value="")
 
         # Add a button inside the expander
         donate = st.button("Send funds")
 
         if donate:
-            print("Hello!")
-            st.success(f"Donation of {donation_amount} received!")
+            if donation_amount.isdigit(): # Send to back-end
+                st.success(f"Donation of {donation_amount} received!")
+            else:
+                st.error(f"Invalid amount: {donation_amount}!")
