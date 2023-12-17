@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
+	"github.com/google/uuid"
 	"io"
 	"net/http"
 )
@@ -44,6 +45,51 @@ func authorizeHandler(c *gin.Context) {
 	if err != nil {
 		c.Status(500)
 	}
+	wb, err := getWalletBalance(p.UUID)
+	if err != nil {
+		c.Status(500)
+	}
+	fmt.Println(wb)
+	var walletID string
+	var address string
+	for _, currency := range wb {
+		if currency.AssetID == TumAuthTokenUUID {
+			walletID = currency.WalletID
+			address = currency.Address
+		}
+	}
+	transactionId := uuid.New().String()
+	transactionGroupId := uuid.New().String()
+	template := TransactionTemplate{
+		NetworkFee: NetworkFee{
+			NetworkFee:   0,
+			UnitPrice:    0,
+			UnitQuantity: 0,
+			UnitAssetId:  TumAuthTokenUUID,
+		},
+		TransactionId:      transactionId,
+		Asset:              TumAuthTokenUUID,
+		TransactionGroupId: transactionGroupId,
+		Sender: TransactionParticipant{
+			Address:    address,
+			InternalId: walletID,
+		},
+		Receiver: TransactionParticipant{
+			Address: address,
+		},
+		Amount: 0,
+		Memo:   "login",
+	}
+	fmt.Println(walletID, address)
+	getTemplate := sendTransactionTemplate(template)
+	if !getTemplate {
+		c.Status(500)
+	}
+	transaction, err := lookupTransaction(transactionId, transactionGroupId)
+	if err != nil {
+		c.Status(500)
+	}
+	fmt.Println(transaction)
 
 	//fmt.Println(metadata)
 }

@@ -29,10 +29,10 @@ type CurrencyBalance struct {
 type WalletBalance = []CurrencyBalance
 
 type NetworkFee struct {
-	NetworkFee   int    `json:"networkFee,omitempty"`
-	UnitPrice    int    `json:"unitPrice,omitempty"`
-	UnitQuantity int    `json:"unitQuantity,omitempty"`
-	UnitAssetId  string `json:"unitAssetId,omitempty"`
+	NetworkFee   int    `json:"networkFee"`
+	UnitPrice    int    `json:"unitPrice"`
+	UnitQuantity int    `json:"unitQuantity"`
+	UnitAssetId  string `json:"unitAssetId"`
 }
 
 type TransactionParticipant struct {
@@ -45,14 +45,14 @@ type TransactionParticipant struct {
 }
 
 type TransactionTemplate struct {
-	NetworkFee         NetworkFee
-	TransactionId      string `json:"transactionId"`
-	Asset              string `json:"asset"`
-	TransactionGroupId string `json:"transactionGroupId"`
-	Sender             TransactionParticipant
-	Receiver           TransactionParticipant
-	Amount             int    `json:"amount"`
-	Memo               string `json:"memo,omitempty"`
+	NetworkFee         NetworkFee             `json:"networkFee"`
+	TransactionId      string                 `json:"transactionId"`
+	Asset              string                 `json:"asset"`
+	TransactionGroupId string                 `json:"transactionGroupId"`
+	Sender             TransactionParticipant `json:"sender"`
+	Receiver           TransactionParticipant `json:"receiver"`
+	Amount             int                    `json:"amount"`
+	Memo               string                 `json:"memo,omitempty"`
 }
 
 type HexTransactionData struct {

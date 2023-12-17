@@ -14,19 +14,19 @@ func sendTransactionTemplate(template TransactionTemplate) bool {
 	if err != nil {
 		return false
 	}
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s", url), bytes.NewBuffer(templateJson))
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(templateJson))
 	req.Header.Set("Content-Type", "application/json")
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
-	if res.Status == "200" {
+	if res.Status == "200 OK" {
 		return true
 	}
 	return false
 }
 
 func lookupTransaction(transactionId string, transactionGroupId string) (Transaction, error) {
-	url := "https://api.ammer.io/wallet-proxy/api/v3/transactions/lookup/"
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/%s/%s", url, transactionGroupId, transactionId), nil)
+	url := "https://api.ammer.io/wallet-proxy/api/v3/transactions/lookup"
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/%s/%s", url, transactionGroupId, transactionId), nil)
 	req.Header.Add("accept", "application/json")
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
