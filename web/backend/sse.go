@@ -10,9 +10,9 @@ import (
 
 var pendingTransactions = make(map[string]*PendingTransaction)
 
-func setupSseListener(connectionId string) (*sse.Client, error) {
+func setupSseListener(connectionId string, handler func(msg *sse.Event)) bool {
 	client := sse.NewClient(fmt.Sprintf("https://api.ammer.io/push/notifications/v2/stream/subscribe/%s", connectionId))
-	err := client.Subscribe("transaction", sseHandler)
+	err := client.Subscribe("transaction", handler)
 	if err != nil {
 		return nil, err
 	}
@@ -58,5 +58,4 @@ func sseHandler(msg *sse.Event) {
 
 	p := pendingTransactions[t.TransactionID]
 	p.Transaction = t
-
 }
